@@ -1,11 +1,14 @@
 import {ICommand} from "../actions/books";
+import {IBook} from "./books";
 
 const initialState = {
     category: null,
-    sortBy: {
-        type: 'popular',
-        order: 'desc'
-    },
+    sortBy: null,
+}
+
+export interface IFilter {
+    category: any,
+    sortBy: any
 }
 
 const filters = (state = initialState, action: ICommand) => {

@@ -15,8 +15,10 @@ const Header = ({
                     categoriesNames,
                     sortNames,
                     onSearchClick,
-                    onChangeSearchInput
-                }: { categoriesNames: string[], onSearchClick: any, onChangeSearchInput: any, sortNames: any }) => {
+                    onChangeSearchInput,
+                    onSelectCategory,
+                    onSelectSortType
+                }: { categoriesNames: any, onSearchClick: any, onChangeSearchInput: any, sortNames: any, onSelectCategory:any, onSelectSortType:any}) => {
 
 
     return (
@@ -37,8 +39,8 @@ const Header = ({
                 </Center>
                 <Center>
                     <HStack spacing="60px">
-                        <Categories categoriesNames={categoriesNames}/>
-                        <Sorting sortNames={sortNames}/>
+                        <Categories categoriesNames={categoriesNames} onSelectCategory={onSelectCategory}/>
+                        <Sorting sortNames={sortNames} onSelectSortType={onSelectSortType}/>
                     </HStack>
                 </Center>
             </div>

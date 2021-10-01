@@ -6,15 +6,18 @@ import BookCard from "../components/BookCard/BookCard";
 import Header from "../components/Header/Header";
 import {fetchBooks} from "../redux/actions/books";
 import {IState} from "../redux/reducers/books";
+import {setCategory, setSortBy} from "../redux/actions/filters";
+import {IFilter} from "../redux/reducers/filters";
 
 
-const categoryNames: string[] = [
-    'Art',
-    'Biography',
-    'Computers',
-    'History',
-    'Medical',
-    'Poetry']
+const categoryNames = [
+    {name: 'Art', type: 'art'},
+    {name: 'Biography', type: 'biography'},
+    {name: 'Computers', type: 'computers'},
+    {name: 'History', type: 'history'},
+    {name: 'Medical', type: 'medical'},
+    {name: 'Poetry', type: 'poetry'},
+]
 
 const sortNames = [
     {name: 'Relevance', type: 'relevance'},
@@ -25,6 +28,8 @@ const Home = () => {
 
     const dispatch = useDispatch()
     const items = useSelector(({books}: { books: IState }) => books.items);
+    const {category, sortBy} = useSelector(({filters} : {filters: IFilter}) => filters);
+
     const totalItems = useSelector(({books}: { books: IState }) => books.totalItems);
     console.log ('items ', items)
 
@@ -35,10 +40,17 @@ const Home = () => {
     }
 
     const onSearchClick = () => {
-        dispatch(fetchBooks(searchValue));
+        dispatch(fetchBooks(searchValue, sortBy, category));
     }
 
-    //const foundResults = items.length;
+    const onSelectCategory = React.useCallback((index) => {
+        dispatch(setCategory(index))
+    }, [])
+
+    const onSelectSortType = React.useCallback((type) => {
+        dispatch(setSortBy(type))
+    }, [])
+
 
     return (
         <div>
@@ -46,7 +58,10 @@ const Home = () => {
                 categoriesNames={categoryNames}
                 sortNames={sortNames}
                 onSearchClick={onSearchClick}
-                onChangeSearchInput={onChangeSearchInput}/>
+                onChangeSearchInput={onChangeSearchInput}
+                onSelectCategory={onSelectCategory}
+                onSelectSortType={onSelectSortType}
+            />
             <Center pt={5}>Found {totalItems} results</Center>
             <Grid templateColumns="repeat(4, 1fr)" gap={6} pt={10}>
             {

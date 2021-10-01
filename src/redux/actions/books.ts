@@ -3,6 +3,7 @@ import {IBook} from "../reducers/books";
 import {GBookAPIResponse} from "../../gBooksApiModels";
 
 export type Func<T, TParam> = (param?: TParam) => T;
+
 //export type Func = (param?: any) => any;
 
 export interface ICommand {
@@ -26,9 +27,18 @@ export const runSearch = (value: string) => ({
     payload: value
 } as ICommand)
 
-export const fetchBooks = (value: string) => (dispatch: Func<any, any>) => {
+export const fetchBooks = (value: string, sortBy?: any, category?: any) => (dispatch: Func<any, any>) => {
+    const startIndex = 1;
+    const pageSize = 30;
 
-    axios.get(`https://www.googleapis.com/books/v1/volumes?q=${value}`)
+    const sorting = sortBy ? `&orderBy=${sortBy}` : '';
+    //const categoring = category ? `&subject=${category}` : '';
+    if (category) {
+        value+=` subject:${category}`
+    }
+
+
+    axios.get(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(value)}&startIndex=${startIndex}&maxResults=${pageSize}${sorting}`)
         .then(({data}) => {
             const result = data as any as GBookAPIResponse;
             const books = {
