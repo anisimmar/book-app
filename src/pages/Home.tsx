@@ -1,7 +1,11 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchBooks} from "../redux/actions/books";
+import {Center} from "@chakra-ui/react";
+
 import BookCard from "../components/BookCard/BookCard";
+import Header from "../components/Header/Header";
+import {fetchBooks} from "../redux/actions/books";
+import {IState} from "../redux/reducers/books";
 
 
 const categoryNames: string[] = [
@@ -13,38 +17,35 @@ const categoryNames: string[] = [
     'Poetry']
 
 const sortNames = [
-    'Relevance',
-    'Newest'
+    {name: 'Relevance', type: 'relevance'},
+    {name: 'Newest', type: 'newest'},
 ]
 
 const Home = () => {
-    const dispatch = useDispatch();
 
-    React.useEffect(() => {
-        dispatch(fetchBooks())
-    }, [])
+    const dispatch = useDispatch()
+    const items = useSelector(({books}: { books: IState }) => books.items);
+    console.log ('items ', items)
+
+    const [searchValue, setSearchValue] = React.useState('');
+
+    const onChangeSearchInput = (event: any /*React.ChangeEventHandler<HTMLInputElement>*/) => {
+        setSearchValue(event.target.value);
+    }
+
+    const onSearchClick = () => {
+        dispatch(fetchBooks(searchValue));
+    }
 
 
     return (
-        <div className="container">
-            <div className="content__top">
-                <Categories
-                    activeCategory={category}
-                    onClickItem={onSelectCategory}
-                    items={categoryNames}/>
-                <SortPopup
-                    activeSortType={sortBy.type}
-                    onClickSortType={onSelectSortType}
-                    items={sortItems}
-                />
-            </div>
-            <h2 className="content__title">Все пиццы</h2>
-            <div className="content__items">
-                {isLoaded ? items.map(obj => <BookCard
-                />) : Array(12).fill(0).map((_, index) => <LoadingPizzaBlock
-                    key={index}
-                />)}
-            </div>
+        <div>
+            <Header categoriesNames={categoryNames} onSearchClick={onSearchClick} onChangeSearchInput={onChangeSearchInput}/>
+            <Center>Found 442 results</Center>
+            {
+            items && items.map((item, i) => <BookCard item={item} key={i}/>)
+            }
+
         </div>
     )
 }

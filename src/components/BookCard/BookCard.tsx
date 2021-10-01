@@ -1,7 +1,9 @@
 import React from "react";
 import {Box, Image} from "@chakra-ui/react"
+import {IBook} from "../../redux/reducers/books";
 
-const BookCard = () => {
+const BookCard = ({item}: { item: IBook }) => {
+
     return (
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" mr={10} ml={10}>
             <Image/>
@@ -28,22 +30,22 @@ const BookCard = () => {
                 >
                 </Box>
 
-
-                <Box color="gray.600" fontSize="sm">
-                    Category
+                <Box>
+                    <Image src={item?.imgUrl ?? 'N/A'} alt='imageAlt' />
                 </Box>
                 <Box color="gray.600" fontSize="sm">
-                    Name
+                    Category: {item?.categories ?? 'N/A'}
                 </Box>
                 <Box color="gray.600" fontSize="sm">
-                    Author
+                    Name: {item?.name ?? 'N/A'}
+                </Box>
+                <Box color="gray.600" fontSize="sm">
+                    Author: {item?.authors ?? 'N/A'}
                 </Box>
 
             </Box>
         </Box>
     )
 }
-
-//выгрузку книг можно делать с помощью метода мап и отдавать нужные данные в компоненту
 
 export default BookCard
