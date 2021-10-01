@@ -10,7 +10,8 @@ export interface IBook {
 export interface IState {
     items: IBook[],
     //isLoaded: boolean,
-    searchQuery: string
+    searchQuery: string,
+    totalItems?: number
 }
 
 
@@ -30,7 +31,8 @@ const books = (state = initialState, action: ICommand) => {
         case 'SET_BOOKS':
             return {
                 ...state,
-                items: action.payload
+                items: action.payload.books,
+                totalItems: action.payload.totalItems
             }
         default:
             return {

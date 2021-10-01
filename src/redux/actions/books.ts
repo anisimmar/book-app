@@ -16,9 +16,9 @@ export const setLoaded = (value: string) => ({
 } as ICommand)
 
 
-export const setBooks = (items: IBook[]) => ({
+export const setBooks = (payload: { books: IBook[], totalItems: number }) => ({
     type: 'SET_BOOKS',
-    payload: items
+    payload: payload
 } as ICommand)
 
 export const runSearch = (value: string) => ({
@@ -27,17 +27,19 @@ export const runSearch = (value: string) => ({
 } as ICommand)
 
 export const fetchBooks = (value: string) => (dispatch: Func<any, any>) => {
-    //dispatch()
 
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${value}`)
         .then(({data}) => {
             const result = data as any as GBookAPIResponse;
-            const books = result.items.map(x => ({
-                name: x.volumeInfo.title,
-                categories: x.volumeInfo.categories,
-                authors: x.volumeInfo.authors,
-                imgUrl: x.volumeInfo.imageLinks?.smallThumbnail
-            } as IBook));
+            const books = {
+                books: result.items.map(x => ({
+                    name: x.volumeInfo.title,
+                    categories: x.volumeInfo.categories,
+                    authors: x.volumeInfo.authors,
+                    imgUrl: x.volumeInfo.imageLinks?.smallThumbnail
+                } as IBook)),
+                totalItems: result.totalItems
+            };
             dispatch(setBooks(books));
         })
 }
