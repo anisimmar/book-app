@@ -3,7 +3,7 @@ import {IBook} from "./books";
 
 const initialState = {
     category: null,
-    sortBy: null,
+    sortBy: 'newest',
 }
 
 export interface IFilter {

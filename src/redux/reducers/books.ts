@@ -1,4 +1,4 @@
-import {ICommand} from "../actions/books";
+import {fetchBooks, ICommand} from "../actions/books";
 
 export interface IBook {
     imgUrl: string,
@@ -11,14 +11,19 @@ export interface IState {
     items: IBook[],
     //isLoaded: boolean,
     searchQuery: string,
-    totalItems?: number
+    totalItems: number,
+    pageSize: number,
+    currentPage: number
 }
 
 
 const initialState: IState = {
     items: [],
     //isLoaded: false,
-    searchQuery: ''
+    searchQuery: '',
+    pageSize: 30,
+    totalItems: 0,
+    currentPage: 0
 }
 
 const books = (state = initialState, action: ICommand) => {
@@ -33,6 +38,11 @@ const books = (state = initialState, action: ICommand) => {
                 ...state,
                 items: action.payload.books,
                 totalItems: action.payload.totalItems
+            }
+        case 'SET_CURRENT_PAGE':
+            return {
+                ...state,
+                currentPage: action.payload
             }
         default:
             return {

@@ -8,7 +8,7 @@ const Sorting = React.memo(function Sorting({sortNames, onSelectSortType}: {sort
     }
     return (
         <div className="sorting">
-            <Select placeholder="Sorting" mb={5} mr={5} ml={10} onChange={onSelectItem}>
+            <Select placeholder="Newest" mb={5} mr={5} ml={10} onChange={onSelectItem}>
                 {sortNames && sortNames.map((obj: any) =>
                     <option
                         value={obj.type}

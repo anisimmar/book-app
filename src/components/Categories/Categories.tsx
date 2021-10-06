@@ -11,8 +11,8 @@ const Categories = React.memo(function Categories({
     }
     return (
         <div className="categories">
-            <Select placeholder="Category" mb={5} mr={5} ml={10} onChange={onSelectItem}>
-                <option onClick={() => onSelectItem(null)}>All</option>
+            <Select placeholder="All" mb={5} mr={5} ml={10} onChange={onSelectItem}>
+                {/*//<option onClick={() => onSelectItem(null)}>All</option>*/}
                 {categoriesNames && categoriesNames.map((category: any, index: number) =>
                     <option key={`${category.value}`}
                             value={category.type}>

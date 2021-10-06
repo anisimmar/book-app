@@ -7,7 +7,7 @@ export type Func<T, TParam> = (param?: TParam) => T;
 //export type Func = (param?: any) => any;
 
 export interface ICommand {
-    type: 'SET_LOADED' | 'SET_BOOKS' | 'SET_SORT_BY' | 'SET_CATEGORY' | 'RUN_SEARCH',
+    type: 'SET_LOADED' | 'SET_BOOKS' | 'SET_SORT_BY' | 'SET_CATEGORY' | 'RUN_SEARCH' | 'SET_CURRENT_PAGE',
     payload: any
 }
 
@@ -27,14 +27,20 @@ export const runSearch = (value: string) => ({
     payload: value
 } as ICommand)
 
-export const fetchBooks = (value: string, sortBy?: any, category?: any) => (dispatch: Func<any, any>) => {
-    const startIndex = 1;
+export const setCurrentPage = (value: number) => ({
+    type: 'SET_CURRENT_PAGE',
+    payload: value
+} as ICommand)
+
+export const fetchBooks = (value: string, currentPage: number, category?: string, sortBy?: string) => (dispatch: Func<any, any>) => {
     const pageSize = 30;
+    const startIndex = currentPage * pageSize;
+
+    console.log('page data query,', pageSize, ' ', currentPage)
 
     const sorting = sortBy ? `&orderBy=${sortBy}` : '';
-    //const categoring = category ? `&subject=${category}` : '';
     if (category) {
-        value+=` subject:${category}`
+        value += ` subject:${category}`
     }
 
 
