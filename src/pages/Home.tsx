@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Center, Flex, Grid} from "@chakra-ui/react";
+import {Center, Flex, Grid, ButtonGroup, Button} from "@chakra-ui/react";
 
 import BookCard from "../components/BookCard/BookCard";
 import Header from "../components/Header/Header";
@@ -53,7 +53,7 @@ const Home = () => {
         dispatch(setSortBy(type))
     }, [])
 
-    let pagesCount = Math.ceil(totalItems/pageSize);
+    let pagesCount = Math.ceil(totalItems / pageSize);
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
@@ -82,7 +82,15 @@ const Home = () => {
                 }
             </Grid>
             <Center>
-                {pages.map((page, i) => <span onClick={(e) => {onPageChanged(page)}} key={i}> {page} </span>)}
+                <ButtonGroup variant="outline" spacing="3" mt={10} mb={10}>
+                    <Button> Prev </Button>
+                    <span>. . .</span>
+                    {pages.map((page, i) => <Button onClick={(e) => {
+                        onPageChanged(page)
+                    }} key={i}> {page} </Button>)}
+                    <span>. . .</span>
+                    <Button> Next </Button>
+                </ButtonGroup>
             </Center>
         </div>
     )
